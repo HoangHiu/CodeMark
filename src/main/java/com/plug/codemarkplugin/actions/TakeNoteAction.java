@@ -7,7 +7,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.plug.codemarkplugin.ui.NoteDialog;
+import com.plug.codemarkplugin.ui.NotesToolWindowFactory;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class TakeNoteAction extends AnAction {
 
@@ -26,8 +29,16 @@ public class TakeNoteAction extends AnAction {
             if (editor != null) {
                 String selectedText = editor.getSelectionModel().getSelectedText();
                 if (selectedText != null && !selectedText.isEmpty()) {
-                    Note note = new Note(header, content, selectedText);
+                    // Get file path
+                    String filePath = e.getData(CommonDataKeys.VIRTUAL_FILE) != null
+                            ? Objects.requireNonNull(e.getData(CommonDataKeys.VIRTUAL_FILE)).getPath()
+                            : "Unknown File";
+
+
+                    Note note = new Note(header, content, selectedText, filePath);
                     NoteService.getInstance().addNote(note);
+
+                    NotesToolWindowFactory.refreshNotes();
                 }
             }
         }
