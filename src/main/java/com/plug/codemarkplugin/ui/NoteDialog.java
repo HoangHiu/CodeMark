@@ -2,14 +2,19 @@ package com.plug.codemarkplugin.ui;
 
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBScrollPane;
+import com.plug.codemarkplugin.enums.NoteTypeEnum;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 
+import com.intellij.openapi.ui.ComboBox;
+
 public class NoteDialog extends DialogWrapper {
     private JTextField headerField;
     private JTextArea contentArea;
+
+    private ComboBox<NoteTypeEnum> comboBox =  new ComboBox<>(NoteTypeEnum.getEnumList());
 
     public NoteDialog() {
         super(true); // use current window as parent
@@ -26,6 +31,7 @@ public class NoteDialog extends DialogWrapper {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.add(new JLabel("Header:"), BorderLayout.NORTH);
         headerPanel.add(headerField, BorderLayout.CENTER);
+        headerPanel.add(comboBox, BorderLayout.EAST);
 
         // Content
         contentArea = new JTextArea(10, 40); // 10 rows, 40 cols
@@ -51,5 +57,6 @@ public class NoteDialog extends DialogWrapper {
     public String getContent() {
         return contentArea.getText();
     }
+    public NoteTypeEnum getType() { return (NoteTypeEnum) comboBox.getSelectedItem(); }
 }
 

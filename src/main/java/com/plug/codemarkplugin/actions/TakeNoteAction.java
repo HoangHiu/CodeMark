@@ -1,5 +1,6 @@
 package com.plug.codemarkplugin.actions;
 
+import com.plug.codemarkplugin.enums.NoteTypeEnum;
 import com.plug.codemarkplugin.model.Note;
 import com.plug.codemarkplugin.services.NoteService;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -24,6 +25,7 @@ public class TakeNoteAction extends AnAction {
         if (dialog.showAndGet()) {
             String header = dialog.getHeader();
             String content = dialog.getContent();
+            NoteTypeEnum type =  dialog.getType();
 
             Editor editor = e.getData(CommonDataKeys.EDITOR);
             if (editor != null) {
@@ -35,7 +37,7 @@ public class TakeNoteAction extends AnAction {
                             : "Unknown File";
 
 
-                    Note note = new Note(header, content, selectedText, filePath);
+                    Note note = new Note(header, content, selectedText, type, filePath);
                     NoteService.getInstance().addNote(note);
 
                     NotesToolWindowFactory.refreshNotes();
