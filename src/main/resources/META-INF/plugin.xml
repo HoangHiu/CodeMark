@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.plug.codemarkplugin</id>
-    <name>Code Notes</name>
+    <name>CodeMark</name>
     <vendor email="you@example.com">Your Name</vendor>
     <version>1.0.0</version>
 
