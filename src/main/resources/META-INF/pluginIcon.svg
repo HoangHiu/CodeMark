@@ -1,0 +1,33 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background rounded square with a different RGB gradient -->
+    <rect width="40" height="40" rx="6" fill="url(#bgGradient)"/>
+
+    <!-- Bookmark outline -->
+    <path d="M31.6667 35L20 28.3333L8.33333 35V8.33333C8.33333 7.44928 8.68452 6.60143 9.30964 5.97631C9.93476 5.35119 10.7826 5 11.6667 5H28.3333C29.2174 5 30.0652 5.35119 30.6904 5.97631C31.3155 6.60143 31.6667 7.44928 31.6667 8.33333V35Z"
+          stroke="url(#iconGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Braces -->
+    <g clip-path="url(#clip0)">
+        <path d="M17.2222 11.6667H16.5278C16.1594 11.6667 15.8079 11.7837 15.5461 11.9919C15.2843 12.2001 15.1389 12.4798 15.1389 12.7778V15.5556C15.1389 15.8536 14.9935 16.1332 14.7317 16.3414C14.4699 16.5496 14.1184 16.6667 13.75 16.6667C14.1184 16.6667 14.4699 16.7837 14.7317 16.9919C14.9935 17.2001 15.1389 17.4798 15.1389 17.7778V20.5556C15.1389 21.1667 15.7639 21.6667 16.5278 21.6667H17.2222"
+              stroke="url(#iconGradient)" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22.9167 21.6667H23.6111C23.9795 21.6667 24.331 21.5496 24.5928 21.3414C24.8546 21.1332 25 20.8536 25 20.5556V17.7778C25 17.1667 25.625 16.6667 26.3889 16.6667C26.0205 16.6667 25.669 16.5496 25.4072 16.3414C25.1454 16.1332 25 15.8536 25 15.5556V12.7778C25 12.4798 24.8546 12.2001 24.5928 11.9919C24.331 11.7837 23.9795 11.6667 23.6111 11.6667H22.9167"
+              stroke="url(#iconGradient)" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <defs>
+        <linearGradient id="bgGradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#111827"/>
+            <stop offset="100%" stop-color="#1f2937"/>
+        </linearGradient>
+
+        <linearGradient id="iconGradient" x1="2.94192" y1="4.89955" x2="37.7772" y2="39.7345" gradientUnits="userSpaceOnUse">
+            <stop offset="0.15937" stop-color="#3BEA62"/>
+            <stop offset="0.5404" stop-color="#3C99CC"/>
+            <stop offset="0.93739" stop-color="#6B57FF"/>
+        </linearGradient>
+
+        <clipPath id="clip0">
+            <rect width="16.6667" height="13.3333" fill="white" transform="translate(11.6667 10)"/>
+        </clipPath>
+    </defs>
+</svg>
