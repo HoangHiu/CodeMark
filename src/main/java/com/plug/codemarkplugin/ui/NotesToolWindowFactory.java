@@ -12,29 +12,36 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class NotesToolWindowFactory implements ToolWindowFactory {
 
-    // static so other parts of the plugin (e.g. actions) can call refreshNotes()
-    private static JPanel notesPanel;
+    private static final Map<Project, JPanel> projectPanels = new ConcurrentHashMap<>();
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        notesPanel = new JPanel();
+        JPanel notesPanel = new JPanel();
         notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.Y_AXIS));
         notesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         notesPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 
-        JBScrollPane scrollPane = new JBScrollPane(notesPanel,
+        JBScrollPane scrollPane = new JBScrollPane(
+                notesPanel,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+        );
         scrollPane.setBorder(null);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // initial population
-        refreshNotes();
+        // Save the panel for this project
+        projectPanels.put(project, notesPanel);
+
+        // Initial population
+        refreshNotes(project);
 
         ContentFactory contentFactory = ContentFactory.getInstance();
         Content content = contentFactory.createContent(mainPanel, "", false);
@@ -42,16 +49,16 @@ public class NotesToolWindowFactory implements ToolWindowFactory {
     }
 
     /**
-     * Rebuilds the notes list. Safe to call from any thread (will schedule UI work on EDT).
-     * Place this method inside NotesToolWindowFactory (as shown).
+     * Rebuilds the notes list for a specific project.
      */
-    public static void refreshNotes() {
+    public static void refreshNotes(Project project) {
+        JPanel notesPanel = projectPanels.get(project);
         if (notesPanel == null) return;
 
         Runnable uiUpdate = () -> {
             notesPanel.removeAll();
 
-            java.util.List<Note> notes = NoteService.getInstance().getNotes();
+            List<Note> notes = project.getService(NoteService.class).getNotes();
 
             if (notes.isEmpty()) {
                 JLabel empty = new JLabel("No notes yet");
@@ -61,15 +68,10 @@ public class NotesToolWindowFactory implements ToolWindowFactory {
             } else {
                 for (Note note : notes) {
                     NotePanel notePanel = new NotePanel(note);
-
-                    // Ensure left alignment; DO NOT override the panel's maximum height here.
                     notePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
                     notesPanel.add(notePanel);
-                    notesPanel.add(Box.createVerticalStrut(4)); // small gap
+                    notesPanel.add(Box.createVerticalStrut(4));
                 }
-
-                // push content to top
                 notesPanel.add(Box.createVerticalGlue());
             }
 
@@ -82,5 +84,12 @@ public class NotesToolWindowFactory implements ToolWindowFactory {
         } else {
             SwingUtilities.invokeLater(uiUpdate);
         }
+    }
+
+    /**
+     * Remove panel when project closes to prevent memory leaks.
+     */
+    public static void disposeProject(Project project) {
+        projectPanels.remove(project);
     }
 }

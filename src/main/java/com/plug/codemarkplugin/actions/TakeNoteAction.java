@@ -38,9 +38,10 @@ public class TakeNoteAction extends AnAction {
 
 
                     Note note = new Note(header, content, selectedText, type, filePath);
-                    NoteService.getInstance().addNote(note);
+                    NoteService noteService = NoteService.getInstance(Objects.requireNonNull(e.getProject()));
+                    noteService.addNote(note);
 
-                    NotesToolWindowFactory.refreshNotes();
+                    NotesToolWindowFactory.refreshNotes(e.getProject());
                 }
             }
         }

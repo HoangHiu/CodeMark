@@ -1,26 +1,46 @@
 package com.plug.codemarkplugin.services;
 
+import com.intellij.openapi.components.*;
+import com.intellij.openapi.project.Project;
 import com.plug.codemarkplugin.model.Note;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteService {
-    private static final NoteService INSTANCE = new NoteService();
-    private final List<Note> notes = new ArrayList<>();
+@Service(Service.Level.PROJECT) // mark as project service
+@State(
+        name = "PersonalNotes",
+        storages = {@Storage(StoragePathMacros.WORKSPACE_FILE)} // per-project, personal
+)
+public final class NoteService implements PersistentStateComponent<NoteService.State> {
 
-    private NoteService() {}
-
-    public static NoteService getInstance() {
-        return INSTANCE;
+    public static class State {
+        public List<Note> notes = new ArrayList<>();
     }
 
+    private State state = new State();
+
+    public static NoteService getInstance(Project project) {
+        return project.getService(NoteService.class);
+    }
+
+    @Override
+    public @NotNull State getState() {
+        return state;
+    }
+
+    @Override
+    public void loadState(@NotNull State state) {
+        this.state = state;
+    }
+
+    // ---- API ----
     public void addNote(Note note) {
-        notes.add(note);
+        state.notes.add(note);
     }
 
     public List<Note> getNotes() {
-        return notes;
+        return new ArrayList<>(state.notes);
     }
 }
-

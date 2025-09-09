@@ -3,12 +3,13 @@ package com.plug.codemarkplugin.model;
 import com.plug.codemarkplugin.enums.NoteTypeEnum;
 
 public class Note {
-    private final String header;
-    private final String content;
-    private final String codeSnippet;
+    private String header;
+    private String content;
+    private String codeSnippet;
+    private NoteTypeEnum noteType;
+    private String filePath;
 
-    private final NoteTypeEnum noteType;
-    private final String filePath;   // NEW
+    public Note() { }
 
     public Note(String header, String content, String codeSnippet, NoteTypeEnum noteType, String filePath) {
         this.header = header;
@@ -18,10 +19,17 @@ public class Note {
         this.filePath = filePath;
     }
 
+    // --- Getters ---
     public String getHeader() { return header; }
     public String getContent() { return content; }
     public String getCodeSnippet() { return codeSnippet; }
     public String getFilePath() { return filePath; }
     public NoteTypeEnum getNoteType() { return noteType; }
-}
 
+    // --- Setters (needed for persistence) ---
+    public void setHeader(String header) { this.header = header; }
+    public void setContent(String content) { this.content = content; }
+    public void setCodeSnippet(String codeSnippet) { this.codeSnippet = codeSnippet; }
+    public void setFilePath(String filePath) { this.filePath = filePath; }
+    public void setNoteType(NoteTypeEnum noteType) { this.noteType = noteType; }
+}
